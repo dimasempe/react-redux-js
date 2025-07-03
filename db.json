@@ -1,0 +1,144 @@
+{
+  "products": [
+    {
+      "id": 1,
+      "name": "Kaos Polos",
+      "imageUrl": "https://placehold.jp/396x594.png",
+      "price": 95000,
+      "stock": 10
+    },
+    {
+      "id": 2,
+      "name": "Hoodie Unisex",
+      "imageUrl": "https://placehold.jp/396x594.png",
+      "price": 120000,
+      "stock": 5
+    },
+    {
+      "id": 3,
+      "name": "Jaket Outdoor",
+      "imageUrl": "https://placehold.jp/396x594.png",
+      "price": 185000,
+      "stock": 7
+    },
+    {
+      "id": 4,
+      "name": "Sweater Rajut",
+      "imageUrl": "https://placehold.jp/396x594.png",
+      "price": 110000,
+      "stock": 4
+    },
+    {
+      "id": 5,
+      "name": "Kemeja Flanel",
+      "imageUrl": "https://placehold.jp/396x594.png",
+      "price": 98000,
+      "stock": 8
+    },
+    {
+      "id": 6,
+      "name": "Kaos Lengan Panjang",
+      "imageUrl": "https://placehold.jp/396x594.png",
+      "price": 87000,
+      "stock": 12
+    },
+    {
+      "id": 7,
+      "name": "Jaket Bomber",
+      "imageUrl": "https://placehold.jp/396x594.png",
+      "price": 165000,
+      "stock": 6
+    },
+    {
+      "id": 8,
+      "name": "Kaos Distro",
+      "imageUrl": "https://placehold.jp/396x594.png",
+      "price": 79000,
+      "stock": 9
+    },
+    {
+      "id": 9,
+      "name": "Polo Shirt",
+      "imageUrl": "https://placehold.jp/396x594.png",
+      "price": 99000,
+      "stock": 15
+    },
+    {
+      "id": 10,
+      "name": "Sweatshirt",
+      "imageUrl": "https://placehold.jp/396x594.png",
+      "price": 105000,
+      "stock": 5
+    },
+    {
+      "id": 11,
+      "name": "Kaos Tie Dye",
+      "imageUrl": "https://placehold.jp/396x594.png",
+      "price": 89000,
+      "stock": 11
+    },
+    {
+      "id": 12,
+      "name": "Jaket Jeans",
+      "imageUrl": "https://placehold.jp/396x594.png",
+      "price": 150000,
+      "stock": 3
+    },
+    {
+      "id": 13,
+      "name": "Kaos Oversize",
+      "imageUrl": "https://placehold.jp/396x594.png",
+      "price": 92000,
+      "stock": 13
+    },
+    {
+      "id": 14,
+      "name": "Crewneck Basic",
+      "imageUrl": "https://placehold.jp/396x594.png",
+      "price": 97000,
+      "stock": 7
+    },
+    {
+      "id": 15,
+      "name": "Kaos Pocket",
+      "imageUrl": "https://placehold.jp/396x594.png",
+      "price": 85000,
+      "stock": 9
+    },
+    {
+      "id": 16,
+      "name": "Jaket Windbreaker",
+      "imageUrl": "https://placehold.jp/396x594.png",
+      "price": 132000,
+      "stock": 4
+    },
+    {
+      "id": 17,
+      "name": "Kaos Stripes",
+      "imageUrl": "https://placehold.jp/396x594.png",
+      "price": 88000,
+      "stock": 10
+    },
+    {
+      "id": 18,
+      "name": "V-Neck T-Shirt",
+      "imageUrl": "https://placehold.jp/396x594.png",
+      "price": 93000,
+      "stock": 6
+    },
+    {
+      "id": 19,
+      "name": "Tank Top",
+      "imageUrl": "https://placehold.jp/396x594.png",
+      "price": 75000,
+      "stock": 8
+    },
+    {
+      "id": 20,
+      "name": "Longline Tee",
+      "imageUrl": "https://placehold.jp/396x594.png",
+      "price": 99000,
+      "stock": 10
+    }
+  ]
+}
