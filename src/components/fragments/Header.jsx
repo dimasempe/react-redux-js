@@ -34,7 +34,9 @@ export const Header = () => {
 
         {/* Auth Buttons */}
         <div className="flex items-center gap-2">
-          <Button variant="outline">Log In</Button>
+          <Link to="/login">
+            <Button variant="outline">Sign In</Button>
+          </Link>
           <Button>Sign Up</Button>
         </div>
       </div>

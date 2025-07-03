@@ -3,21 +3,26 @@ import { useParams } from "react-router";
 import { Button } from "@/components/ui/button";
 import { TiMinus, TiPlus } from "react-icons/ti";
 import axios from "axios";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const DetailProductPage = () => {
   const { productId } = useParams();
   const [product, setProduct] = useState(null);
   const [quantity, setQuantity] = useState(0);
+  const [productIsLoading, setProductIsLoading] = useState(false);
 
   useEffect(() => {
     async function getProduct() {
       try {
+        setProductIsLoading(true);
         const response = await axios.get(
           `http://localhost:3000/products/${productId}`
         );
         setProduct(response.data);
       } catch (error) {
         console.error("Failed to fetch product", error);
+      } finally {
+        setProductIsLoading(false);
       }
     }
     getProduct();
@@ -31,7 +36,23 @@ const DetailProductPage = () => {
     if (quantity > 0) setQuantity(quantity - 1);
   };
 
-  if (!product) return <p className="text-center mt-10">Loading product...</p>;
+  if (productIsLoading || !product) {
+    return (
+      <main className="max-w-screen-xl min-h-screen mx-auto px-4 py-10">
+        {/* Skeleton tampil saat loading */}
+        <div className="grid grid-cols-2 gap-8 items-start">
+          <Skeleton className="w-full h-[500px] rounded-xl" />
+          <div className="flex flex-col gap-4">
+            <Skeleton className="h-8 w-1/2" />
+            <Skeleton className="h-4 w-24" />
+            <Skeleton className="h-6 w-32" />
+            <Skeleton className="h-20 w-full" />
+            <Skeleton className="h-10 w-full rounded-md" />
+          </div>
+        </div>
+      </main>
+    );
+  }
 
   return (
     <main className="max-w-screen-xl min-h-screen mx-auto px-4 py-10">
