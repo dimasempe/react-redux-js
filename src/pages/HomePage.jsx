@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import { ProductCard } from "../components/fragments/ProductCard";
-import axios from "axios";
+import { axiosBaseURL } from "@/lib/axios";
 
 const HomePage = () => {
   const [products, setProducts] = useState([]);
 
   async function getProducts() {
     try {
-      const response = await axios.get("http://localhost:3000/products");
+      const response = await axiosBaseURL.get("/products");
       setProducts(response.data);
     } catch (error) {
       console.error(error);
