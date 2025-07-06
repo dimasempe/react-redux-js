@@ -26,6 +26,7 @@ import {
 } from "@/components/ui/pagination";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
+import { Checkbox } from "@/components/ui/checkbox";
 
 function ProductManagementPage() {
   const [products, setProducts] = useState([]);
@@ -33,6 +34,7 @@ function ProductManagementPage() {
   const [prevPage, setPrevPage] = useState();
   const [searchProduct, setSearchProduct] = useState("");
   const [searchParams, setSearchParams] = useSearchParams();
+  const [someCheckbox, setSomeCheckbox] = useState([]);
 
   const handleNextPage = () => {
     searchParams.set("page", Number(searchParams.get("page")) + 1);
@@ -54,7 +56,7 @@ function ProductManagementPage() {
     }
   };
 
-  const delateHandleProduct = (id) => {
+  const deleteHandleProduct = (id) => {
     const confirmed = confirm("Are you sure you want to delete this product?");
     if (!confirmed) return;
     axiosBaseURL
@@ -65,6 +67,28 @@ function ProductManagementPage() {
       .catch((error) => {
         console.error(error);
       });
+  };
+
+  const handleCheckbox = (checked, id) => {
+    if (checked) setSomeCheckbox([...someCheckbox, id]);
+    else setSomeCheckbox(someCheckbox.filter((item) => item !== id));
+
+    console.log(someCheckbox);
+  };
+
+  const deleteSomeProducts = () => {
+    const confirmed = confirm(
+      "Are you sure you want to delete these products?"
+    );
+    if (!confirmed) return;
+    someCheckbox.forEach((id) => {
+      axiosBaseURL
+        .delete(`/products/${id}`)
+        .then(() => {})
+        .catch((error) => {
+          console.error(error);
+        });
+    });
   };
 
   useEffect(() => {
@@ -99,11 +123,18 @@ function ProductManagementPage() {
         title="Product Management"
         description="Manage your products"
         rightSection={
-          <Link to="/admin/products/create">
-            <Button className="hover:cursor-pointer">
-              <IoMdAdd /> add new product
-            </Button>
-          </Link>
+          <div className="flex justify-end gap-4 mb-4">
+            {someCheckbox.length > 0 && (
+              <Button onClick={deleteSomeProducts} className="hover:cursor-pointer" variant="destructive">
+                Delete {someCheckbox.length} Products
+              </Button>
+            )}
+            <Link to="/admin/products/create">
+              <Button className="hover:cursor-pointer flex items-center gap-2">
+                <IoMdAdd /> Add New Product
+              </Button>
+            </Link>
+          </div>
         }
       >
         <Label htmlFor="table-search" className="text-lg mb-2">
@@ -127,6 +158,7 @@ function ProductManagementPage() {
           <TableCaption>list products.</TableCaption>
           <TableHeader>
             <TableRow>
+              <TableHead />
               <TableHead className="w-[100px]">ID</TableHead>
               <TableHead className="w-md">Product Name</TableHead>
               <TableHead>Price</TableHead>
@@ -137,6 +169,14 @@ function ProductManagementPage() {
           <TableBody>
             {products.map((product) => (
               <TableRow key={product.id}>
+                <TableCell>
+                  <Checkbox
+                    onCheckedChange={(checked) => {
+                      handleCheckbox(checked, product.id);
+                    }}
+                    checked={someCheckbox.includes(product.id)}
+                  />
+                </TableCell>
                 <TableCell className="font-medium">{product.id}</TableCell>
                 <TableCell>{product.name}</TableCell>
                 <TableCell>
@@ -153,7 +193,7 @@ function ProductManagementPage() {
                   <Button
                     variant="destructive"
                     className="hover:cursor-pointer ml-2.5"
-                    onClick={() => delateHandleProduct(product.id)}
+                    onClick={() => deleteHandleProduct(product.id)}
                   >
                     <BsTrash3 />
                   </Button>

@@ -5,7 +5,7 @@ import { TiMinus, TiPlus } from "react-icons/ti";
 import { Skeleton } from "@/components/ui/skeleton";
 import { axiosBaseURL } from "@/lib/axios";
 
-const DetailProductPage = () => {
+function DetailProductPage() {
   const { productId } = useParams();
   const [product, setProduct] = useState(null);
   const [quantity, setQuantity] = useState(0);
@@ -15,9 +15,7 @@ const DetailProductPage = () => {
     async function getProduct() {
       try {
         setProductIsLoading(true);
-        const response = await axiosBaseURL.get(
-          `/products/${productId}`
-        );
+        const response = await axiosBaseURL.get(`/products/${productId}`);
         setProduct(response.data);
       } catch (error) {
         console.error("Failed to fetch product", error);
@@ -108,6 +106,6 @@ const DetailProductPage = () => {
       </div>
     </main>
   );
-};
+}
 
 export default DetailProductPage;
