@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import { Button } from "@/components/ui/button";
 import { TiMinus, TiPlus } from "react-icons/ti";
-import axios from "axios";
 import { Skeleton } from "@/components/ui/skeleton";
+import { axiosBaseURL } from "@/lib/axios";
 
 const DetailProductPage = () => {
   const { productId } = useParams();
@@ -15,8 +15,8 @@ const DetailProductPage = () => {
     async function getProduct() {
       try {
         setProductIsLoading(true);
-        const response = await axios.get(
-          `http://localhost:3000/products/${productId}`
+        const response = await axiosBaseURL.get(
+          `/products/${productId}`
         );
         setProduct(response.data);
       } catch (error) {

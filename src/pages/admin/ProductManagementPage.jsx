@@ -2,9 +2,10 @@ import { AdminLayout } from "@/components/layouts/AdminLayout";
 import { Button } from "@/components/ui/button";
 import { IoMdAdd } from "react-icons/io";
 import { useState } from "react";
-import { IoEllipsisHorizontal } from "react-icons/io5";
-import { useSearchParams } from "react-router";
+import { FiEdit } from "react-icons/fi";
+import { Link, useSearchParams } from "react-router";
 import { MdNavigateNext, MdNavigateBefore } from "react-icons/md";
+import { BsTrash3 } from "react-icons/bs";
 
 import {
   Table,
@@ -26,7 +27,7 @@ import {
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 
-const ProductManagementPage = () => {
+function ProductManagementPage() {
   const [products, setProducts] = useState([]);
   const [nextPage, setNextPage] = useState();
   const [prevPage, setPrevPage] = useState();
@@ -44,13 +45,26 @@ const ProductManagementPage = () => {
   };
 
   const handleSearchProduct = () => {
-    if(searchProduct){
-        searchParams.set("search", searchProduct);
-        setSearchParams(searchParams);
-    }else{
-        searchParams.delete("search");
-        setSearchParams(searchParams);
+    if (searchProduct) {
+      searchParams.set("search", searchProduct);
+      setSearchParams(searchParams);
+    } else {
+      searchParams.delete("search");
+      setSearchParams(searchParams);
     }
+  };
+
+  const delateHandleProduct = (id) => {
+    const confirmed = confirm("Are you sure you want to delete this product?");
+    if (!confirmed) return;
+    axiosBaseURL
+      .delete(`/products/${id}`)
+      .then(() => {
+        alert("Product has been deleted!");
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   };
 
   useEffect(() => {
@@ -85,9 +99,11 @@ const ProductManagementPage = () => {
         title="Product Management"
         description="Manage your products"
         rightSection={
-          <Button>
-            <IoMdAdd /> add new product
-          </Button>
+          <Link to="/admin/products/create">
+            <Button className="hover:cursor-pointer">
+              <IoMdAdd /> add new product
+            </Button>
+          </Link>
         }
       >
         <Label htmlFor="table-search" className="text-lg mb-2">
@@ -128,7 +144,19 @@ const ProductManagementPage = () => {
                 </TableCell>
                 <TableCell>{product.stock}</TableCell>
                 <TableCell>
-                  <IoEllipsisHorizontal />
+                  <Link to={`/admin/products/edit/${product.id}`}>
+                    <Button variant="outline" className="hover:cursor-pointer">
+                      <FiEdit />
+                    </Button>
+                  </Link>
+
+                  <Button
+                    variant="destructive"
+                    className="hover:cursor-pointer ml-2.5"
+                    onClick={() => delateHandleProduct(product.id)}
+                  >
+                    <BsTrash3 />
+                  </Button>
                 </TableCell>
               </TableRow>
             ))}
@@ -144,7 +172,7 @@ const ProductManagementPage = () => {
                 onClick={handlePreviousPage}
                 variant="ghost"
               >
-                Next <MdNavigateBefore />
+                <MdNavigateBefore /> Previous
               </Button>
             </PaginationItem>
             <PaginationItem className="text-sm">
@@ -165,6 +193,6 @@ const ProductManagementPage = () => {
       </AdminLayout>
     </div>
   );
-};
+}
 
 export default ProductManagementPage;

@@ -6,6 +6,8 @@ import Footer from "./components/fragments/Footer";
 import DetailProductPage from "./pages/DetailProductPage";
 import LoginPage from "./pages/LoginPage";
 import ProductManagementPage from "./pages/admin/ProductManagementPage";
+import CreateProductPage from "./pages/admin/CreateProductPage";
+import EditProductPage from "./pages/admin/EditProductPage";
 
 function App() {
   const location = useLocation();
@@ -19,7 +21,13 @@ function App() {
         <Route path="product/:productId" element={<DetailProductPage />} />
         <Route path="login" element={<LoginPage />} />
         <Route path="about" element={<h1>About</h1>} />
-        <Route path="admin/products" element={<ProductManagementPage />} />
+
+        <Route path="admin">
+          <Route path="products" element={<ProductManagementPage />} />
+          <Route path="products/create" element={<CreateProductPage />} />
+          <Route path="products/edit/:productId" element={<EditProductPage />} />
+        </Route>
+
         <Route
           path="*"
           element={
