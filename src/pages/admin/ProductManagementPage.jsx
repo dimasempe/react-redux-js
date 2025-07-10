@@ -76,19 +76,24 @@ function ProductManagementPage() {
     console.log(someCheckbox);
   };
 
-  const deleteSomeProducts = () => {
+  const deleteSomeProducts = async () => {
     const confirmed = confirm(
       "Are you sure you want to delete these products?"
     );
     if (!confirmed) return;
-    someCheckbox.forEach((id) => {
-      axiosBaseURL
-        .delete(`/products/${id}`)
-        .then(() => {})
-        .catch((error) => {
-          console.error(error);
-        });
-    });
+
+    try {
+      await Promise.all(
+        someCheckbox.map((id) => axiosBaseURL.delete(`/products/${id}`))
+      );
+      alert("All selected products deleted successfully.");
+      searchParams.set("page", 1);
+      setSearchParams(searchParams);
+      setSomeCheckbox([]);
+    } catch (error) {
+      console.error("Error deleting products:", error);
+      alert("Some deletions may have failed.");
+    }
   };
 
   useEffect(() => {
@@ -125,7 +130,11 @@ function ProductManagementPage() {
         rightSection={
           <div className="flex justify-end gap-4 mb-4">
             {someCheckbox.length > 0 && (
-              <Button onClick={deleteSomeProducts} className="hover:cursor-pointer" variant="destructive">
+              <Button
+                onClick={deleteSomeProducts}
+                className="hover:cursor-pointer"
+                variant="destructive"
+              >
                 Delete {someCheckbox.length} Products
               </Button>
             )}

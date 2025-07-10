@@ -2,8 +2,10 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { ShoppingCart, Heart, Search } from "lucide-react";
 import { Link } from "react-router";
+// import { useSelector } from "react-redux";
 
 export const Header = () => {
+    // const counterSlice = useSelector((state) => state.counter)
   return (
     <header className="w-full border-b shadow-sm sticky top-0 bg-white z-50">
       <div className="max-w-screen-xl mx-auto px-4 py-3 flex items-center justify-between gap-4">
@@ -11,7 +13,8 @@ export const Header = () => {
         <Link to="/">
           <div className="text-xl font-bold text-primary">MyShop</div>
         </Link>
-
+        
+        {/* {counterSlice.counter} */}
         {/* Search Bar */}
         <div className="flex-1 max-w-md relative">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground w-4 h-4" />

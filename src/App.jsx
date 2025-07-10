@@ -8,6 +8,8 @@ import LoginPage from "./pages/LoginPage";
 import ProductManagementPage from "./pages/admin/ProductManagementPage";
 import CreateProductPage from "./pages/admin/CreateProductPage";
 import EditProductPage from "./pages/admin/EditProductPage";
+import CounterPage from "./pages/CounterPage";
+import RegisterPage from "./pages/RegisterPage";
 
 function App() {
   const location = useLocation();
@@ -20,6 +22,8 @@ function App() {
         <Route index element={<HomePage />} />
         <Route path="product/:productId" element={<DetailProductPage />} />
         <Route path="login" element={<LoginPage />} />
+        <Route path="register" element={<RegisterPage />} />
+        <Route path="counter" element={<CounterPage />} />
         <Route path="about" element={<h1>About</h1>} />
 
         <Route path="admin">
