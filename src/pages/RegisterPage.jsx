@@ -46,9 +46,12 @@ function RegisterPage() {
   const handleRegister = async function(values) {
     try {
       const userResponse = await axiosBaseURL.get("/users", {
-        username: values.username,
+        params: {
+          username: values.username
+        }
       });
       if (userResponse.data.length > 0) {
+        console.log(userResponse.data);
         alert("Username already exists!");
         return;
       }
@@ -56,6 +59,7 @@ function RegisterPage() {
       await axiosBaseURL.post("/users", {
         username: values.username,
         password: values.password,
+        user:"non-admin"
       });
       alert("Account has been created!");
       form.reset();

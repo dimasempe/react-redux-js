@@ -159,7 +159,14 @@
     {
       "id": "d66d",
       "username": "cobaFitur",
-      "password": "pass"
+      "password": "pass",
+      "user": "non-admin"
+    },
+    {
+      "id": "404a",
+      "username": "dimasadmin",
+      "password": "pass",
+      "user": "admin"
     }
   ]
 }
