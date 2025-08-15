@@ -7,6 +7,7 @@ const HomePage = () => {
   const [products, setProducts] = useState([]);
 
   async function getProducts() {
+    
     try {
       const response = await axiosBaseURL.get("/products");
       setProducts(response.data);

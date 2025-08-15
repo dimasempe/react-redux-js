@@ -12,17 +12,19 @@ import CounterPage from "./pages/CounterPage";
 import RegisterPage from "./pages/RegisterPage";
 import CartPage from "./pages/CartPage";
 import { useHydration } from "./hooks/useHydration";
+import { Toaster } from "sonner";
 
 function App() {
   const location = useLocation();
 
   const { isHydrated } = useHydration();
-  
+
   if (!isHydrated) {
     return <div>Loading...</div>;
   }
   return (
     <>
+     <Toaster richColors position="bottom-right"/>
       {!location.pathname.startsWith("/admin") && <Header />}
       <Routes>
         <Route index element={<HomePage />} />

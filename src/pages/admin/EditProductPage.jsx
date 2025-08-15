@@ -9,7 +9,6 @@ function EditProductPage() {
   const navigate = useNavigate();
   const { productId } = useParams();
   const [product, setProduct] = useState();
-
   const editHandleProduct = (values) => {
     axiosBaseURL
       .patch(`/products/${productId}`, {
@@ -20,7 +19,7 @@ function EditProductPage() {
       })
       .then((response) => {
         console.log(response.data);
-        alert("Product has been edited!");
+        alert("Product has been updated!");
         navigate("/admin/products");
       })
       .catch((error) => {
@@ -45,7 +44,9 @@ function EditProductPage() {
       {!product ? (
         <Skeleton className="h-96 w-full rounded-md" />
       ) : (
-        <ProductForm handleOnSubmit={editHandleProduct} product={product} />
+        <>
+          <ProductForm handleOnSubmit={editHandleProduct} product={product} />
+        </>
       )}
     </AdminLayout>
   );

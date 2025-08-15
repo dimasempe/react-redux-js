@@ -27,7 +27,7 @@ import {
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
-
+import { Toaster } from "@/components/ui/sonner";
 function ProductManagementPage() {
   const [products, setProducts] = useState([]);
   const [nextPage, setNextPage] = useState();
@@ -63,6 +63,9 @@ function ProductManagementPage() {
       .delete(`/products/${id}`)
       .then(() => {
         alert("Product has been deleted!");
+        setProducts((prevProducts) =>
+          prevProducts.filter((product) => product.id !== id)
+        );
       })
       .catch((error) => {
         console.error(error);
@@ -128,117 +131,169 @@ function ProductManagementPage() {
         title="Product Management"
         description="Manage your products"
         rightSection={
-          <div className="flex justify-end gap-4 mb-4">
+          <div className="flex justify-end gap-4 mb-6">
             {someCheckbox.length > 0 && (
               <Button
                 onClick={deleteSomeProducts}
-                className="hover:cursor-pointer"
+                className="hover:cursor-pointer h-11 px-6 rounded-xl font-semibold transition-all duration-200 shadow-md hover:shadow-lg"
                 variant="destructive"
               >
+                <BsTrash3 className="w-4 h-4 mr-2" />
                 Delete {someCheckbox.length} Products
               </Button>
             )}
             <Link to="/admin/products/create">
-              <Button className="hover:cursor-pointer flex items-center gap-2">
-                <IoMdAdd /> Add New Product
+              <Button className="hover:cursor-pointer flex items-center gap-2 h-11 px-6 rounded-xl font-semibold bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 transition-all duration-200 shadow-md hover:shadow-lg">
+                <IoMdAdd className="w-5 h-5" /> Add New Product
               </Button>
             </Link>
           </div>
         }
       >
-        <Label htmlFor="table-search" className="text-lg mb-2">
-          Search Products
-        </Label>
-        <div className="flex">
-          <Input
-            id="table-search"
-            type="text"
-            placeholder="Search for products..."
-            className="mb-4 max-w-xl"
-            value={searchProduct}
-            onChange={(event) => setSearchProduct(event.target.value)}
-          />
-          <Button onClick={handleSearchProduct} className="ml-2">
-            Search
-          </Button>
+        <div className="bg-white rounded-2xl shadow-lg p-6 mb-6">
+          <Label
+            htmlFor="table-search"
+            className="text-lg font-semibold mb-3 block text-gray-700"
+          >
+            Search Products
+          </Label>
+          <div className="flex gap-3">
+            <Input
+              id="table-search"
+              type="text"
+              placeholder="Search for products..."
+              className="flex-1 max-w-xl h-12 px-4 rounded-xl border-2 border-gray-200 focus:border-blue-500 transition-colors duration-200"
+              value={searchProduct}
+              onChange={(event) => setSearchProduct(event.target.value)}
+            />
+            <Button
+              onClick={handleSearchProduct}
+              className="h-12 px-6 rounded-xl font-semibold bg-gradient-to-r from-green-600 to-blue-600 hover:from-green-700 hover:to-blue-700 transition-all duration-200 shadow-md hover:shadow-lg"
+            >
+              Search
+            </Button>
+          </div>
         </div>
 
-        <Table>
-          <TableCaption>list products.</TableCaption>
-          <TableHeader>
-            <TableRow>
-              <TableHead />
-              <TableHead className="w-[100px]">ID</TableHead>
-              <TableHead className="w-md">Product Name</TableHead>
-              <TableHead>Price</TableHead>
-              <TableHead>Stock</TableHead>
-              <TableHead>Action</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {products.map((product) => (
-              <TableRow key={product.id}>
-                <TableCell>
-                  <Checkbox
-                    onCheckedChange={(checked) => {
-                      handleCheckbox(checked, product.id);
-                    }}
-                    checked={someCheckbox.includes(product.id)}
-                  />
-                </TableCell>
-                <TableCell className="font-medium">{product.id}</TableCell>
-                <TableCell>{product.name}</TableCell>
-                <TableCell>
-                  Rp {product.price.toLocaleString("id-ID")}
-                </TableCell>
-                <TableCell>{product.stock}</TableCell>
-                <TableCell>
-                  <Link to={`/admin/products/edit/${product.id}`}>
-                    <Button variant="outline" className="hover:cursor-pointer">
-                      <FiEdit />
-                    </Button>
-                  </Link>
-
-                  <Button
-                    variant="destructive"
-                    className="hover:cursor-pointer ml-2.5"
-                    onClick={() => deleteHandleProduct(product.id)}
-                  >
-                    <BsTrash3 />
-                  </Button>
-                </TableCell>
+        <div className="bg-white rounded-2xl shadow-lg overflow-hidden">
+          <Table>
+            <TableCaption className="text-gray-600 py-4">
+              A list of your products.
+            </TableCaption>
+            <TableHeader>
+              <TableRow className="bg-gray-50 border-b-2 border-gray-200">
+                <TableHead className="w-12 text-center" />
+                <TableHead className="w-[100px] font-semibold text-gray-700">
+                  ID
+                </TableHead>
+                <TableHead className="w-md font-semibold text-gray-700">
+                  Product Name
+                </TableHead>
+                <TableHead className="font-semibold text-gray-700">
+                  Price
+                </TableHead>
+                <TableHead className="font-semibold text-gray-700">
+                  Stock
+                </TableHead>
+                <TableHead className="font-semibold text-gray-700">
+                  Action
+                </TableHead>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+            </TableHeader>
+            <TableBody>
+              {products.map((product, index) => (
+                <TableRow
+                  key={product.id}
+                  className={`border-b border-gray-100 hover:bg-gray-50 transition-colors duration-150 ${
+                    index % 2 === 0 ? "bg-white" : "bg-gray-25"
+                  }`}
+                >
+                  <TableCell className="text-center">
+                    <Checkbox
+                      onCheckedChange={(checked) => {
+                        handleCheckbox(checked, product.id);
+                      }}
+                      checked={someCheckbox.includes(product.id)}
+                      className="w-5 h-5 rounded border-2 border-gray-300"
+                    />
+                  </TableCell>
+                  <TableCell className="font-medium text-gray-600">
+                    #{product.id}
+                  </TableCell>
+                  <TableCell className="font-semibold text-gray-900">
+                    {product.name}
+                  </TableCell>
+                  <TableCell className="font-bold text-green-600">
+                    Rp {product.price.toLocaleString("id-ID")}
+                  </TableCell>
+                  <TableCell>
+                    <span
+                      className={`px-3 py-1 rounded-full text-sm font-medium ${
+                        product.stock < 10
+                          ? "bg-red-100 text-red-700"
+                          : product.stock < 20
+                          ? "bg-yellow-100 text-yellow-700"
+                          : "bg-green-100 text-green-700"
+                      }`}
+                    >
+                      {product.stock}
+                    </span>
+                  </TableCell>
+                  <TableCell>
+                    <div className="flex gap-2">
+                      <Link to={`/admin/products/edit/${product.id}`}>
+                        <Button
+                          variant="outline"
+                          className="hover:cursor-pointer h-9 w-9 p-0 rounded-lg border-2 border-blue-200 text-blue-600 hover:bg-blue-50 hover:border-blue-300 transition-all duration-200"
+                        >
+                          <FiEdit className="w-4 h-4" />
+                        </Button>
+                      </Link>
 
-        <Pagination>
-          <PaginationContent>
-            <PaginationItem>
-              <Button
-                className="text-sm ml-5"
-                disabled={!prevPage}
-                onClick={handlePreviousPage}
-                variant="ghost"
-              >
-                <MdNavigateBefore /> Previous
-              </Button>
-            </PaginationItem>
-            <PaginationItem className="text-sm">
-              Page {searchParams.get("page")}
-            </PaginationItem>
-            <PaginationItem>
-              <Button
-                className="text-sm ml-5"
-                disabled={!nextPage}
-                onClick={handleNextPage}
-                variant="ghost"
-              >
-                Next <MdNavigateNext />
-              </Button>
-            </PaginationItem>
-          </PaginationContent>
-        </Pagination>
+                      <Button
+                        variant="destructive"
+                        className="hover:cursor-pointer h-9 w-9 p-0 rounded-lg transition-all duration-200 shadow-sm hover:shadow-md"
+                        onClick={() => deleteHandleProduct(product.id)}
+                      >
+                        <BsTrash3 className="w-4 h-4" />
+                      </Button>
+                    </div>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </div>
+
+        <div className="mt-8 flex justify-center">
+          <Pagination>
+            <PaginationContent className="flex items-center gap-4">
+              <PaginationItem>
+                <Button
+                  className="text-sm h-10 px-4 rounded-xl font-semibold"
+                  disabled={!prevPage}
+                  onClick={handlePreviousPage}
+                  variant="link"
+                >
+                  <MdNavigateBefore className="w-4 h-4 mr-1" /> Previous
+                </Button>
+              </PaginationItem>
+              <PaginationItem className="text-sm font-semibold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent px-4 py-2 rounded-xl bg-gray-50">
+                Page {searchParams.get("page")}
+              </PaginationItem>
+              <PaginationItem>
+                <Button
+                  className="text-sm h-10 px-4 rounded-xl font-semibold"
+                  disabled={!nextPage}
+                  onClick={handleNextPage}
+                  variant="link"
+                >
+                  Next <MdNavigateNext className="w-4 h-4 ml-1" />
+                </Button>
+              </PaginationItem>
+            </PaginationContent>
+          </Pagination>
+        </div>
       </AdminLayout>
     </div>
   );

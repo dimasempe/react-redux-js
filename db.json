@@ -1,27 +1,6 @@
 {
   "products": [
     {
-      "id": "2",
-      "name": "Kaos Oversized",
-      "imageUrl": "https://placehold.jp/396x594.png",
-      "price": 82000,
-      "stock": 8
-    },
-    {
-      "id": "3",
-      "name": "Hoodie Zipper",
-      "imageUrl": "https://placehold.jp/396x594.png",
-      "price": 145000,
-      "stock": 5
-    },
-    {
-      "id": "4",
-      "name": "Sweater Rajut",
-      "imageUrl": "https://placehold.jp/396x594.png",
-      "price": 130000,
-      "stock": 4
-    },
-    {
       "id": "5",
       "name": "Kemeja Flanel",
       "imageUrl": "https://placehold.jp/396x594.png",
@@ -167,6 +146,62 @@
       "username": "dimasadmin",
       "password": "pass",
       "user": "admin"
+    }
+  ],
+  "carts": [
+    {
+      "id": "8387",
+      "userId": "404a",
+      "productId": "5",
+      "quantity": 1
+    },
+    {
+      "id": "8c21",
+      "userId": "404a",
+      "productId": "5",
+      "quantity": 1
+    },
+    {
+      "id": "eb21",
+      "userId": "404a",
+      "productId": "5",
+      "quantity": 2
+    },
+    {
+      "id": "c438",
+      "userId": "404a",
+      "productId": "5",
+      "quantity": 3
+    },
+    {
+      "id": "6e89",
+      "userId": "404a",
+      "productId": "5",
+      "quantity": 2
+    },
+    {
+      "id": "2f15",
+      "userId": "404a",
+      "productId": "5",
+      "quantity": 2
+    },
+    {
+      "id": "2d57",
+      "userId": "404a",
+      "productId": "5",
+      "quantity": 2
+    },
+    {
+      "id": "ddfb",
+      "userId": "404a",
+      "productId": "5",
+      "quantity": 3
+    },
+    {
+      "id": "3c74",
+      "userId": "404a",
+      "productId": "5",
+      "quantity": 2
     }
   ]
 }

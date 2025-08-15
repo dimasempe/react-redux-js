@@ -4,54 +4,76 @@ import { IoCartSharp } from "react-icons/io5";
 import { IoPersonCircle } from "react-icons/io5";
 import AdminPage from "../guard/AdminPage";
 
-const SidebarItem = ({ children }) => {
+const SidebarItem = ({ children, active = false }) => {
   return (
     <Button
       variant="ghost"
       size="lg"
-      className="w-full rounded-none justify-start"
+      className={`w-full rounded-none justify-start px-6 py-3 transition-all duration-200 hover:bg-slate-100 hover:border-r-4 hover:border-blue-500 ${
+        active ? 'bg-blue-50 border-r-4 border-blue-500 text-blue-700' : 'text-gray-700'
+      }`}
     >
       {children}
     </Button>
   );
 };
+
 export const AdminLayout = ({ title, description, rightSection, children }) => {
   return (
     <AdminPage>
-      <div className="flex">
-        <aside className="w-72 border-r h-screen">
-          <div className="h-16 border-b flex items-center justify-center">
-            <h1 className="text-2xl font-bold">Admin Dashboard</h1>
+      <div className="flex min-h-screen bg-gray-50">
+        {/* Sidebar */}
+        <aside className="w-72 bg-white border-r border-gray-200 shadow-sm">
+          {/* Header */}
+          <div className="h-16 border-b border-gray-200 flex items-center justify-center bg-gradient-to-r from-blue-600 to-blue-700">
+            <h1 className="text-xl font-bold text-white">Admin Dashboard</h1>
           </div>
 
-          <div className="flex flex-col">
-            <SidebarItem>
-              <IoIosPricetags />
-              <span className="ml-4 text-lg">Products Management</span>
+          {/* Navigation */}
+          <nav className="flex flex-col py-4">
+            <SidebarItem active={true}>
+              <IoIosPricetags className="w-5 h-5" />
+              <span className="ml-3 text-base font-medium">Products Management</span>
             </SidebarItem>
             <SidebarItem>
-              <IoCartSharp />
-              <span className="ml-4 text-lg">Order Management</span>
+              <IoCartSharp className="w-5 h-5" />
+              <span className="ml-3 text-base font-medium">Order Management</span>
             </SidebarItem>
-          </div>
+          </nav>
         </aside>
 
-        <div className="flex-1">
-          <header className="h-16 w-full border-b flex items-center justify-end px-4">
-            <button>
-              <IoPersonCircle className="h-15 w-15" />
-            </button>
+        {/* Main Content */}
+        <div className="flex-1 flex flex-col">
+          {/* Header */}
+          <header className="h-16 w-full bg-white border-b border-gray-200 flex items-center justify-end px-6 shadow-sm">
+            <div className="flex items-center space-x-4">
+              <div className="text-right">
+                <p className="text-sm font-medium text-gray-900">Admin User</p>
+                <p className="text-xs text-gray-500">Administrator</p>
+              </div>
+              <Button className="p-1 rounded-full hover:bg-gray-100 transition-colors">
+                <IoPersonCircle className="h-8 w-8 text-gray-600" />
+              </Button>
+            </div>
           </header>
 
-          <main className="flex flex-col p-4">
-            <div className="flex justify-between items-center pb-4 border-b mb-8">
+          {/* Main Content Area */}
+          <main className="flex-1 p-6">
+            {/* Page Header */}
+            <div className="flex justify-between items-start pb-6 border-b border-gray-200 mb-8">
               <div>
-                <h1 className="text-2xl font-bold">{title}</h1>
-                <p className="text-muted-foreground">{description}</p>
+                <h1 className="text-3xl font-bold text-gray-900 mb-2">{title}</h1>
+                <p className="text-gray-600 text-lg">{description}</p>
               </div>
-              {rightSection}
+              <div className="flex-shrink-0">
+                {rightSection}
+              </div>
             </div>
-            {children}
+
+            {/* Page Content */}
+            <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+              {children}
+            </div>
           </main>
         </div>
       </div>
