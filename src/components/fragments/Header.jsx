@@ -1,6 +1,6 @@
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { ShoppingCart, Heart, Search } from "lucide-react";
+import { ShoppingCart, Heart, Search, History } from "lucide-react";
 import { Link } from "react-router";
 import { useSelector, useDispatch } from "react-redux";
 import { Separator } from "@/components/ui/separator";
@@ -38,8 +38,8 @@ export const Header = () => {
   // }, [userSelector.id, dispatch]);
 
   useEffect(() => {
-    fetchCart();
-  }, []);
+    fetchCart(userSelector.id);
+  }, [userSelector.id]);
 
   return (
     <header className="w-full border-b border-gray-200 shadow-lg sticky top-0 bg-gradient-to-r from-white to-gray-50 backdrop-blur-md z-50">
@@ -65,13 +65,6 @@ export const Header = () => {
         {/* Icons */}
         <div className="flex gap-6 items-center">
           <div className="flex items-center gap-3">
-            <Button
-              variant="ghost"
-              size="icon"
-              className="h-12 w-12 rounded-full hover:bg-red-50 hover:text-red-600 transition-all duration-200"
-            >
-              <Heart className="w-6 h-6" />
-            </Button>
             <Link to="/cart">
               <Button
                 variant="ghost"
@@ -82,6 +75,15 @@ export const Header = () => {
                 <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
                   {cartSelector.items.length}
                 </span>
+              </Button>
+            </Link>
+            <Link to="/history">
+              <Button
+                variant="ghost"
+                size="icon"
+                className="h-12 w-12 rounded-full hover:bg-emerald-50 hover:text-emerald-600 transition-all duration-200"
+              >
+                <History className="w-6 h-6" />
               </Button>
             </Link>
           </div>
@@ -114,6 +116,7 @@ export const Header = () => {
                 <div className="font-semibold text-gray-700 px-3 py-2 bg-gray-100 rounded-full">
                   Hello, {userSelector.username}
                 </div>
+
                 <Separator
                   orientation="vertical"
                   decorative={true}

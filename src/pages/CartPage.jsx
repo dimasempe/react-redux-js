@@ -6,6 +6,7 @@ import { axiosBaseURL } from "@/lib/axios";
 import { toast } from "sonner";
 import { useSelector } from "react-redux";
 import { fetchCart } from "@/services/cartService";
+import { CartItem } from "@/components/fragments/CartItem";
 
 function CartPage() {
   const [cartItems, setCartItems] = useState([]);
@@ -16,8 +17,10 @@ function CartPage() {
 
   const total = cartItems.reduce(
     (sum, item) => sum + item.product.price * item.quantity,
-    0
+    0,
   );
+
+  const tax = total * 0.1;
 
   const getUserCarts = async () => {
     const storedUserId = JSON.parse(localStorage.getItem("currentUser"));
@@ -53,10 +56,42 @@ function CartPage() {
       });
   };
 
+  const handleCheckout = async () => {
+    for (let i = 0; i < cartItems.length; i++) {
+      const currentCartItem = cartSelector.items[i];
+
+      if (currentCartItem.quantity > currentCartItem.product.stock) {
+        toast.error("Product stock is not enough!");
+        return;
+      }
+    }
+
+    await axiosBaseURL.post("/transactions", {
+      userId: userSelector.id,
+      totalPrice: total,
+      tax,
+      transactionDate: new Date(),
+      items: cartSelector.items,
+    });
+
+    cartSelector.items.forEach(async (cartItem) => {
+      await axiosBaseURL.patch(`/products/${cartItem.product.id}`, {
+        stock: cartItem.product.stock - cartItem.quantity,
+      });
+    });
+
+    cartSelector.items.forEach(async (cartItem) => {
+      await axiosBaseURL.delete(`/carts/${cartItem.id}`);
+    });
+
+    fetchCart(userSelector.id);
+    
+  };
+
   return (
     <AuthedPage>
       <div className="min-h-screen bg-gradient-to-br from-slate-50 to-gray-100">
-        <div className="max-w-screen-md mx-auto px-4 py-8">
+        <div className="max-w-screen-lg mx-auto px-4 py-8">
           <h1 className="text-3xl font-bold mb-8 text-gray-800 text-center">
             Your Cart
           </h1>
@@ -68,50 +103,40 @@ function CartPage() {
               </p>
             </div>
           ) : (
-            <div className="space-y-6">
-              {cartSelector.items.map((item) => (
-                <div
-                  key={item.id}
-                  className="flex items-center gap-6 bg-white border border-gray-200 rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow duration-200"
-                >
-                  <img
-                    src={item.product.imageUrl}
-                    alt={item.product.name}
-                    className="w-24 h-24 object-cover rounded-lg border-2 border-gray-100"
+            <div className="flex gap-4 items-start">
+              <div className="w-2/3 space-y-6">
+                {cartSelector.items.map((item) => (
+                  <CartItem
+                    key={item.id}
+                    id={item.id}
+                    imageUrl={item.product.imageUrl}
+                    name={item.product.name}
+                    quantity={item.quantity}
+                    price={item.product.price}
+                    handleRemoveItem={handleRemoveItem}
                   />
-                  <div className="flex-1">
-                    <h2 className="text-lg font-semibold text-gray-800 mb-2">
-                      {item.product.name}
-                    </h2>
-                    <p className="text-sm text-gray-500 mb-1">
-                      Quantity: {item.quantity}
-                    </p>
-                    <p className="text-lg font-bold text-blue-600">
-                      Rp{" "}
-                      {(item.product.price * item.quantity).toLocaleString(
-                        "id-ID"
-                      )}
-                    </p>
+                ))}
+              </div>
+              <div className="w-1/3 bg-white rounded-xl p-6 shadow-sm border border-gray-200">
+                <h1 className="text-3xl font-extrabold text-gray-800 text-center mb-4">
+                  Order Summary
+                </h1>
+                <div className="flex flex-col">
+                  <div className="text-2xl font-bold text-gray-800">
+                    Sub Total: Rp {total.toLocaleString("id-ID")}
+                  </div>
+                  <Separator className="my-8" />
+                  <div className="text-2xl font-bold text-gray-800">
+                    Tax: Rp {(total * 0.1).toLocaleString("id-ID")}
+                  </div>
+                  <Separator className="my-8" />
+                  <div className="text-2xl font-bold text-gray-800 mb-6">
+                    Total: Rp {(total + total * 0.1).toLocaleString("id-ID")}
                   </div>
                   <Button
-                    variant="destructive"
-                    size="sm"
-                    onClick={() => handleRemoveItem(item.id)}
-                    className="bg-red-500 hover:bg-red-600 text-white font-medium px-4 py-2 rounded-lg transition-colors duration-200"
+                    onClick={handleCheckout}
+                    className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-8 py-3 rounded-lg shadow-md hover:shadow-lg transition-all duration-200"
                   >
-                    Remove
-                  </Button>
-                </div>
-              ))}
-
-              <Separator className="my-8" />
-
-              <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-200">
-                <div className="flex justify-between items-center">
-                  <div className="text-2xl font-bold text-gray-800">
-                    Total: Rp {total.toLocaleString("id-ID")}
-                  </div>
-                  <Button className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-8 py-3 rounded-lg shadow-md hover:shadow-lg transition-all duration-200">
                     Checkout
                   </Button>
                 </div>

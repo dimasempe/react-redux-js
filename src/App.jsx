@@ -13,6 +13,7 @@ import RegisterPage from "./pages/RegisterPage";
 import CartPage from "./pages/CartPage";
 import { useHydration } from "./hooks/useHydration";
 import { Toaster } from "sonner";
+import HistoryPage from "./pages/HistoryPage";
 
 function App() {
   const location = useLocation();
@@ -33,6 +34,7 @@ function App() {
         <Route path="register" element={<RegisterPage />} />
         <Route path="counter" element={<CounterPage />} />
         <Route path="about" element={<h1>About</h1>} />
+        <Route path="history" element={<HistoryPage/>} />
         <Route path="cart" element={<CartPage />} />
 
         <Route path="admin">
